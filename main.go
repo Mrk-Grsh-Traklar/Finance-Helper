@@ -9,7 +9,14 @@ type User struct {
 }
 
 func addMoney(user *User, amount int) {
-	user.Balance += amount
+	if amount > 0 {
+		user.Balance += amount
+		fmt.Println("успешное пополнение баланса")
+
+	} else {
+		fmt.Println("Ошибка, нельзя пополнить на отрицательную сумму")
+
+	}
 }
 
 func withDraw(user *User, Drawamount int) {
@@ -28,11 +35,11 @@ func withDraw(user *User, Drawamount int) {
 func procent(user *User) {
 	fmt.Println(user.Balance)
 
-	monthProcent := user.Balance * (int(user.procentStavka) / 12) / 100
-	fmt.Println("через месяц вы получите: ", user.Balance+monthProcent, "(", "+", monthProcent, ")")
+	monthProcent := float64(user.Balance) * (float64(user.procentStavka) / 100 / 12)
+	fmt.Println("через месяц вы получите: ", float64(user.Balance)+monthProcent, "(", "+", monthProcent, ")")
 
-	yearProcent := user.Balance * int(user.procentStavka) / 100
-	fmt.Println("через год вы получите: ", user.Balance+yearProcent, "(", "+", yearProcent, ")")
+	yearProcent := float64(user.Balance) * float64(user.procentStavka) / 100
+	fmt.Println("через год вы получите: ", float64(user.Balance)+yearProcent, "(", "+", yearProcent, ")")
 }
 
 func main() {
