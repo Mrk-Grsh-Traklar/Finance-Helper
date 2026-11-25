@@ -3,8 +3,9 @@ package main
 import "fmt"
 
 type User struct {
-	Name    string
-	Balance int
+	Name          string
+	Balance       int
+	procentStavka float32
 }
 
 func addMoney(user *User, amount int) {
@@ -22,6 +23,16 @@ func withDraw(user *User, Drawamount int) {
 		fmt.Println("Ошибка, не хватвет средств")
 	}
 
+}
+
+func procent(user *User) {
+	fmt.Println(user.Balance)
+
+	monthProcent := user.Balance * (int(user.procentStavka) / 12) / 100
+	fmt.Println("через месяц вы получите: ", user.Balance+monthProcent, "(", "+", monthProcent, ")")
+
+	yearProcent := user.Balance * int(user.procentStavka) / 100
+	fmt.Println("через год вы получите: ", user.Balance+yearProcent, "(", "+", yearProcent, ")")
 }
 
 func main() {
@@ -48,4 +59,9 @@ func main() {
 
 	fmt.Println("Пользователь:", user.Name)
 	fmt.Println("Итоговый баланс:", user.Balance)
+
+	fmt.Println("Введите годовую ставку: ")
+	fmt.Scan(&user.procentStavka)
+	procent(&user)
+
 }
