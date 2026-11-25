@@ -38,30 +38,46 @@ func procent(user *User) {
 func main() {
 	user := User{}
 
-	var sumAdd int
-	var sumMin int
+	var menu int
+MENU:
+	for {
+		fmt.Println("Пользователь:", user.Name)
+		fmt.Println("Итоговый баланс:", user.Balance)
+		fmt.Println("===ВЫБЕРИТЕ ДЕЙСТВИЕ===\n1.Создать профиль\n2.Пополнить счёт\n3.Снять деньги\n4.Расчитать процент\n5.Выход")
+		fmt.Scan(&menu)
 
-	fmt.Println("Введите имя:")
-	fmt.Scan(&user.Name)
+		switch menu {
+		case 1:
 
-	fmt.Println("Введите начальный баланс:")
-	fmt.Scan(&user.Balance)
+			fmt.Println("Введите имя:")
+			fmt.Scan(&user.Name)
 
-	fmt.Println("Введите сумму пополнения:")
-	fmt.Scan(&sumAdd)
+			fmt.Println("Введите начальный баланс:")
+			fmt.Scan(&user.Balance)
+		case 2:
+			var sumAdd int
+			fmt.Println("Введите сумму пополнения:")
+			fmt.Scan(&sumAdd)
 
-	addMoney(&user, sumAdd)
+			addMoney(&user, sumAdd)
+		case 3:
+			var sumMin int
 
-	fmt.Println("Введите сумму для снятия")
-	fmt.Scan(&sumMin)
+			fmt.Println("Введите сумму для снятия")
+			fmt.Scan(&sumMin)
 
-	withDraw(&user, sumMin)
+			withDraw(&user, sumMin)
+		case 4:
+			fmt.Println("Введите годовую ставку: ")
+			fmt.Scan(&user.procentStavka)
+			procent(&user)
+		case 5:
+			break MENU
 
-	fmt.Println("Пользователь:", user.Name)
-	fmt.Println("Итоговый баланс:", user.Balance)
+		default:
+			fmt.Println("Неверный ввод, попробуйте снова.")
 
-	fmt.Println("Введите годовую ставку: ")
-	fmt.Scan(&user.procentStavka)
-	procent(&user)
+		}
 
+	}
 }
