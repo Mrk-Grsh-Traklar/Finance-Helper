@@ -1,11 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+type Account struct {
+	NameAc    string
+	BalanceAc float64
+}
 
 type User struct {
 	Name          string
 	Balance       int
-	procentStavka float32
+	ProcentStavka float32
+	ccounts       []Account
+}
+
+func SaveUser(User User) error {
+	data, err := json.MarshalIndent(User, "", "    ")
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile("user.json", data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
 
 func addMoney(user *User, amount int) {
@@ -35,14 +58,15 @@ func withDraw(user *User, Drawamount int) {
 func procent(user *User) {
 	fmt.Println(user.Balance)
 
-	monthProcent := float64(user.Balance) * (float64(user.procentStavka) / 100 / 12)
+	monthProcent := float64(user.Balance) * (float64(user.ProcentStavka) / 100 / 12)
 	fmt.Println("через месяц вы получите: ", float64(user.Balance)+monthProcent, "(", "+", monthProcent, ")")
 
-	yearProcent := float64(user.Balance) * float64(user.procentStavka) / 100
+	yearProcent := float64(user.Balance) * float64(user.ProcentStavka) / 100
 	fmt.Println("через год вы получите: ", float64(user.Balance)+yearProcent, "(", "+", yearProcent, ")")
 }
 
 func main() {
+
 	user := User{}
 
 	var menu int
@@ -76,9 +100,17 @@ MENU:
 			withDraw(&user, sumMin)
 		case 4:
 			fmt.Println("Введите годовую ставку: ")
-			fmt.Scan(&user.procentStavka)
+			fmt.Scan(&user.ProcentStavka)
 			procent(&user)
 		case 5:
+			err := SaveUser(user)
+
+			if err != nil {
+				fmt.Println("Ошибка сохранения:", err)
+			} else {
+				fmt.Println("Данные сохранены!")
+			}
+
 			break MENU
 
 		default:
@@ -87,4 +119,5 @@ MENU:
 		}
 
 	}
+
 }
